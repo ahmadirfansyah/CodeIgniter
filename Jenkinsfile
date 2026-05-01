@@ -8,15 +8,13 @@ pipeline {
  }
  }
 
-		stage('Install PHP') {
-  steps {
-    sh '''
-    apt update
-    apt install -y php php-cli php-xml php-mbstring unzip curl
-    '''
+pipeline {
+  agent {
+    docker {
+      image 'php:8.1-cli'
+    }
   }
-}
-
+	 
  stage('Install Composer') {
  steps {
  echo 'Installing Composer...'
