@@ -8,6 +8,15 @@ pipeline {
  }
  }
 
+		stage('Install PHP') {
+  steps {
+    sh '''
+    apt update
+    apt install -y php php-cli php-xml php-mbstring unzip curl
+    '''
+  }
+}
+
  stage('Install Composer') {
  steps {
  echo 'Installing Composer...'
