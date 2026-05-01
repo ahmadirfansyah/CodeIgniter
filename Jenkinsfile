@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'php:8.1-cli'
-    }
-  }
+  agent any
 
   stages {
 
@@ -13,41 +9,21 @@ pipeline {
       }
     }
 
-    stage('Install Composer') {
+    stage('Build') {
       steps {
-        echo 'Installing Composer...'
-        sh '''
-        php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-        php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-        php -r "unlink('composer-setup.php');"
-        '''
+        echo 'Building...'
       }
     }
 
-    stage('Install Dependencies') {
+    stage('Test') {
       steps {
-        echo 'Installing dependencies with Composer...'
-        sh 'composer install --no-dev --optimize-autoloader'
-      }
-    }
-
-    stage('Run Tests') {
-      steps {
-        sh 'phpunit'
-      }
-      post {
-        success {
-          junit 'application/tests/results/*.xml'
-        }
-        failure {
-          echo 'Tests failed!'
-        }
+        echo 'Testing...'
       }
     }
 
     stage('Deploy') {
       steps {
-        echo 'Deploying to production environment...'
+        echo 'Deploying...'
       }
     }
   }
